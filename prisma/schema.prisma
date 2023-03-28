@@ -6,3 +6,51 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model lots {
+  id       Int       @id(map: "lots_pk") @default(autoincrement())
+  name     String?   @db.VarChar
+  length   Int       @default(autoincrement())
+  width    Int       @default(autoincrement())
+  location String    @db.VarChar
+  rates    rates[]
+  spaces   spaces[]
+  tickets  tickets[]
+}
+
+model managers {
+  name     String @db.VarChar
+  username String @id(map: "managers_pk") @db.VarChar
+  password String @db.VarChar
+}
+
+model rates {
+  id            Int       @id(map: "rates_pk") @default(autoincrement())
+  lotid         Int       @default(autoincrement())
+  rate          Decimal   @db.Decimal
+  overtimerate  Decimal   @db.Decimal
+  effectivedate DateTime  @default(now()) @db.Timestamp(6)
+  expirydate    DateTime? @db.Timestamp(6)
+  lots          lots      @relation(fields: [lotid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "rates_fk")
+}
+
+model spaces {
+  id             Int       @id(map: "spaces_pk") @default(autoincrement())
+  lotid          Int       @default(autoincrement())
+  lengthlocation Int?
+  widthlocation  Int?
+  avalible       Boolean
+  lots           lots      @relation(fields: [lotid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "spaces_fk")
+  tickets        tickets[]
+}
+
+model tickets {
+  id            Int      @id(map: "tickets_pk") @default(autoincrement())
+  lotid         Int      @default(autoincrement())
+  spaceid       Int      @default(autoincrement())
+  effectivedate DateTime @db.Timestamp(6)
+  bookedtime    DateTime @db.Time(6)
+  expirydate    DateTime @db.Timestamp(6)
+  lots          lots     @relation(fields: [lotid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_fk")
+  spaces        spaces   @relation(fields: [spaceid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_fk_1")
+}

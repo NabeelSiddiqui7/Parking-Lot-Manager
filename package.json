@@ -5,7 +5,6 @@
   "main": "src/server.ts",
   "author": "",
   "license": "ISC",
-  "type": "module",
   "scripts": {
     "build": "swc src -d dist --source-maps --copy-files",
     "dev": "nodemon",
