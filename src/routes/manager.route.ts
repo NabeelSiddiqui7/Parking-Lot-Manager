@@ -13,10 +13,12 @@ class ManagerRoute implements Route {
     }
 
     public initializeRoutes() {
-        //get current rates for all lots
+        // get current rates for all lots
         this.router.get(`${this.path}/rates`, (req: Request, res: Response) => { });
-        // update rate for a lot
+        // insert rate for a lot
         this.router.post(`${this.path}/rate`, (req: Request, res: Response) => { });
+        // update rate for a lot
+        this.router.put(`${this.path}/rate`, (req: Request, res: Response) => { });
 
         // get all lot info
         this.router.get(`${this.path}/lots`, (req: Request, res: Response) => { });
@@ -36,8 +38,10 @@ class ManagerRoute implements Route {
 
         // get all manager names
         this.router.get(`${this.path}/managers`, (req: Request, res: Response) => { });
-        // update a managers info
+        // insert a managers info
         this.router.post(`${this.path}/managers`, (req: Request, res: Response) => { });
+        // update a managers info
+        this.router.put(`${this.path}/managers`, (req: Request, res: Response) => { });
         // delete a manager
         this.router.delete(`${this.path}/managers`, (req: Request, res: Response) => { });
 

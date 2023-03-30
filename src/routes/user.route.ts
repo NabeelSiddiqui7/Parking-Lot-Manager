@@ -6,7 +6,7 @@ import { Route } from '@interfaces/route.interface';
 import LotService from '@services/lot.service';
 import TicketService from '@services/ticket.service';
 import { ParkingLotAvalibility, ParkingLotRate } from '@/interfaces/lot.interface';
-import { Ticket } from '@interfaces/ticket.interface';
+import { Ticket, TicketPrice } from '@interfaces/ticket.interface';
 
 class UserRoute implements Route {
     public router: Router = Router();
@@ -47,8 +47,30 @@ class UserRoute implements Route {
 
         // book ticket
         this.router.post(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
+            const spaceID: number = 1;
+            const expectedexpirydate: number = Date.now();
+            const result: number = await this.ticketService.insertTicket(spaceID, expectedexpirydate);
+            if (result) {
+                res.send(result);
+            }
+            else {
+                next(new HttpException(500, 'Unable to insert ticket'))
+            }
 
         });
+
+        //expire ticket
+        this.router.put(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
+            const ticketID: number = 4;
+            if (await this.ticketService.updateTicket(ticketID)) {
+                const results: TicketPrice = await this.ticketService.getTicketPrice(ticketID);
+                res.send(results);
+            } else {
+                next(new HttpException(402, 'No such ticket exists'));
+            }
+
+        });
+
         // get ticket info
         this.router.get(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
             const ticketID: number = 2;
