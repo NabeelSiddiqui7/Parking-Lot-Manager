@@ -32,7 +32,7 @@ JOIN   spaces s
 ON     t.spaceid = s.id
 JOIN   rates r
 ON     s.lotid = r.lotid
-AND    t.effectivedate BETWEEN r.effectivedate AND    COALESCE(r.expirydate, CURRENT_TIMESTAMP)
+AND    t.effectivedate BETWEEN r.effectivedate AND COALESCE(r.expirydate, CURRENT_TIMESTAMP)
 WHERE  t.id = ${ticketID}
 `;
         if (results.length) {

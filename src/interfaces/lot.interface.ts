@@ -1,4 +1,5 @@
 export interface ParkingLot {
+    id: number,
     name: string,
     location: string,
     length: number,
@@ -10,7 +11,7 @@ export interface ParkingSpace {
     avalible: boolean
 }
 
-export interface ParkingLotRate {
+export interface ParkingRate {
     rate: number,
     overtimerate: number
 }
@@ -18,4 +19,14 @@ export interface ParkingLotRate {
 export interface ParkingLotAvalibility {
     booked: ParkingSpace[],
     unavalible: ParkingSpace[]
+}
+
+export interface ParkingLotRate {
+    id: number,
+    name: string,
+    length: number,
+    width: number,
+    location: string,
+    rate: number,
+    overtimerate: number
 }

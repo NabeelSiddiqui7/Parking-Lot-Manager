@@ -5,7 +5,7 @@ import { HttpException } from '@exceptions/HttpException';
 import { Route } from '@interfaces/route.interface';
 import LotService from '@services/lot.service';
 import TicketService from '@services/ticket.service';
-import { ParkingLotAvalibility, ParkingLotRate } from '@/interfaces/lot.interface';
+import { ParkingLot, ParkingLotAvalibility, ParkingLotRate } from '@/interfaces/lot.interface';
 import { Ticket, TicketPrice } from '@interfaces/ticket.interface';
 
 class UserRoute implements Route {
@@ -30,7 +30,7 @@ class UserRoute implements Route {
         });
         // get all lots info
         this.router.get(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const data = await this.lotService.getLots();
+            const data:ParkingLot[] = await this.lotService.getLots();
             res.send(data);
         });
 
