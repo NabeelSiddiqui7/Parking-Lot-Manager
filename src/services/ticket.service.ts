@@ -6,7 +6,7 @@ class TicketService {
         const results = await prisma.$queryRaw`SELECT * FROM lots`;
         return results;
     }
-    public async insertTicket(spaceID: number, time) {
+    public async insertTicket(spaceID: number, expectedexpirydate: Date) {
         const results = await prisma.$queryRaw`SELECT * FROM lots`;
         return results;
     }

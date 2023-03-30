@@ -3,4 +3,5 @@ export interface Ticket{
     lotid:number,
     spaceid:number,
     effectivedate:Date,
+    expectedexpirydate:Date
 }
