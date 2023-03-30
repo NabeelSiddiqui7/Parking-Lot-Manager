@@ -1,16 +1,15 @@
 import prisma from "@databases/postgresClient"
 
-class LotService {
+class TicketService {
     
-    public async getLot(lotID: number) {
+    public async getTicket(ticketID: number) {
         const results = await prisma.$queryRaw`SELECT * FROM lots`;
         return results;
     }
-    public async getLots() {
+    public async insertTicket(spaceID: number, time) {
         const results = await prisma.$queryRaw`SELECT * FROM lots`;
-        console.log(results);
         return results;
     }
 }
 
-export default LotService;
+export default TicketService;
