@@ -3,7 +3,7 @@ import { Manager, ManagerAuth } from "@interfaces/manager.interface"
 class ManagerService {
 
     public async getManagers() {
-        const results: Manager[] = await prisma.$queryRaw<Manager>`SELECT name, username FROM managers`;
+        const results: Manager[] = await prisma.$queryRaw<Manager[]>`SELECT name, username FROM managers`;
         return results;
     }
     public async insertManager(userName: string, name: string, password: string) {
@@ -17,7 +17,7 @@ class ManagerService {
     }
 
     public async getManagerAuth(username: string) {
-        const results: ManagerAuth[] = await prisma.$queryRaw<ManagerAuth>`SELECT username, password FROM managers WHERE username LIKE ${username}`;
+        const results: ManagerAuth[] = await prisma.$queryRaw<ManagerAuth[]>`SELECT username, password FROM managers WHERE username LIKE ${username}`;
         return results;
     }
 }

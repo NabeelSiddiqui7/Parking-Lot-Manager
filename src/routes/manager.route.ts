@@ -34,25 +34,25 @@ class ManagerRoute implements Route {
 
         // get all lot info
         this.router.get(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const result: ParkingRate[] = await this.lotService.getLots();
+            const result: any = await this.lotService.getLots();
             res.send(result);
         });
         // insert a lot info
-        this.router.post(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const lotname: string = "mynewlot";
-            const lotlength: number = 4;
-            const lotwidth: number = 4;
-            const lotlocation: string = "idk";
-            const lotrate: number = 1.2;
-            const lotovertimerate = 2.5;
-            const result = await this.lotService.insertLot(lotname, lotlength, lotwidth, lotlocation, lotrate, lotovertimerate);
-            if (result) {
-                res.send("New lot created");
-            }
-            else {
-                next(new HttpException(402, "Lot Name already exists"));
-            }
-        });
+        // this.router.post(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
+        //     const lotname: string = "mynewlot";
+        //     const lotlength: number = 4;
+        //     const lotwidth: number = 4;
+        //     const lotlocation: string = "idk";
+        //     const lotrate: number = 1.2;
+        //     const lotovertimerate = 2.5;
+        //     const result = await this.lotService.insertLot(lotname, lotlength, lotwidth, lotlocation, lotrate, lotovertimerate);
+        //     if (result) {
+        //         res.send("New lot created");
+        //     }
+        //     else {
+        //         next(new HttpException(402, "Lot Name already exists"));
+        //     }
+        // });
 
         // delete a lot
         this.router.delete(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
@@ -92,7 +92,7 @@ class ManagerRoute implements Route {
 
         // get all manager names
         this.router.get(`${this.path}/managers`, async (req: Request, res: Response, next: NextFunction) => {
-            const results: Manager[] = this.managerService.getManagers();
+            const results: any = this.managerService.getManagers();
             res.send(results)
         });
         // insert a managers info
