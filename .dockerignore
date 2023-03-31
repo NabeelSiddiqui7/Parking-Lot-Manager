@@ -1,0 +1,9 @@
+# Ignore git related files
+.git/*
+.gitignore
+README.md
+
+# Ignore nodejs development files/folders
+nodemon.json
+node_modules/**
+

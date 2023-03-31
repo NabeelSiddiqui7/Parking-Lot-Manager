@@ -4,7 +4,7 @@ import prisma from "@databases/postgresClient"
 class LotService {
     public async insertLot(name: string, length: number, width: number, location: string, rate: number, overtimerate: number) {
         let result: number = await prisma.$executeRaw`INSERT INTO lots (name, length, width, location) VALUES (${name},${length},${width},${location})`;
-        let result: number = await prisma.$executeRaw`INSERT INTO rates (lotid, rate, overtimerate) VALUES ((SELECT id FROM lots WHERE name LIKE ${name}), ${rate}, ${overtimerate})`;
+        result = await prisma.$executeRaw`INSERT INTO rates (lotid, rate, overtimerate) VALUES ((SELECT id FROM lots WHERE name LIKE ${name}), ${rate}, ${overtimerate})`;
         if (result) {
             for (let indexLength = 0; indexLength < length; indexLength++) {
                 for (let indexWidth = 0; indexWidth < width; indexWidth++) {
