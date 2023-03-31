@@ -37,7 +37,7 @@ class UserRoute implements Route {
         // get rate of a lot
         this.router.get(`${this.path}/rate`, async (req: Request, res: Response, next: NextFunction) => {
             const lotID: number = 1;
-            const data: ParkingLotRate = await this.lotService.getRate(lotID);
+            const data: any = await this.lotService.getRate(lotID);
             if (data) {
                 res.send(data);
             } else {
@@ -63,7 +63,7 @@ class UserRoute implements Route {
         this.router.put(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
             const ticketID: number = 4;
             if (await this.ticketService.updateTicket(ticketID)) {
-                const results: TicketPrice = await this.ticketService.getTicketPrice(ticketID);
+                const results: any= await this.ticketService.getTicketPrice(ticketID);
                 res.send(results);
             } else {
                 next(new HttpException(402, 'No such ticket exists'));
@@ -74,7 +74,7 @@ class UserRoute implements Route {
         // get ticket info
         this.router.get(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
             const ticketID: number = 2;
-            const data: Ticket = await this.ticketService.getTicket(ticketID);
+            const data: any = await this.ticketService.getTicket(ticketID);
             if (data) {
                 res.send(data);
             } else {
