@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-
+import cors from 'cors';
 import errorMiddleware from '@middlewares/error.middleware';
 import ManagerRoute from '@routes/manager.route';
 import UserRoute from '@routes/user.route';
@@ -14,6 +14,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(require('body-parser').urlencoded({ extended: true }));
