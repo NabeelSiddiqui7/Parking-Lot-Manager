@@ -1,7 +1,22 @@
-import { ParkingLot, ParkingLotRates, ParkingRate, ParkingSpace } from "@interfaces/lot.interface";
+import { ParkingLot, ParkingLotRate, ParkingRate, ParkingSpace } from "@interfaces/lot.interface";
 import prisma from "@databases/postgresClient"
 
 class LotService {
+    public async insertLot(name: string, length: number, width: number, location: string, rate: number, overtimerate: number) {
+        let result: number = await prisma.$executeRaw`INSERT INTO lots (name, length, width, location) VALUES (${name},${length},${width},${location})`;
+        let result: number = await prisma.$executeRaw`INSERT INTO rates (lotid, rate, overtimerate) VALUES ((SELECT id FROM lots WHERE name LIKE ${name}), ${rate}, ${overtimerate})`;
+        if (result) {
+            for (let indexLength = 0; indexLength < length; indexLength++) {
+                for (let indexWidth = 0; indexWidth < width; indexWidth++) {
+                    result = await prisma.$executeRaw`INSERT INTO spaces (lotid, lengthlocation, widthlocation) VALUES ((SELECT id FROM lots WHERE name LIKE ${name}), ${indexLength}, ${indexWidth})`;
+                    if (!result) {
+                        return result;
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
     public async getLot(lotID: number) {
         const results: ParkingLot[] = await prisma.$queryRaw<ParkingLot>`SELECT id, name, location, length, width FROM lots l WHERE l.lotid = ${lotID}`;

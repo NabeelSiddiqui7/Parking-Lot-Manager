@@ -26,8 +26,8 @@ class ManagerRoute implements Route {
             const result: ParkingLotRate[] = await this.lotService.getRates();
             res.send(result);
         });
-        // insert rate for a lot
-        this.router.post(`${this.path}/rate`, async (req: Request, res: Response, next: NextFunction) => { });
+        // // insert rate for a lot
+        // this.router.post(`${this.path}/rate`, async (req: Request, res: Response, next: NextFunction) => { });
 
         // update rate for a lot
         this.router.put(`${this.path}/rate`, async (req: Request, res: Response, next: NextFunction) => { });
@@ -38,7 +38,21 @@ class ManagerRoute implements Route {
             res.send(result);
         });
         // insert a lot info
-        this.router.post(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => { });
+        this.router.post(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
+            const lotname: string = "mynewlot";
+            const lotlength: number = 4;
+            const lotwidth: number = 4;
+            const lotlocation: string = "idk";
+            const lotrate: number = 1.2;
+            const lotovertimerate = 2.5;
+            const result = await this.lotService.insertLot(lotname, lotlength, lotwidth, lotlocation, lotrate, lotovertimerate);
+            if (result) {
+                res.send("New lot created");
+            }
+            else {
+                next(new HttpException(402, "Lot Name already exists"));
+            }
+        });
 
         // delete a lot
         this.router.delete(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
