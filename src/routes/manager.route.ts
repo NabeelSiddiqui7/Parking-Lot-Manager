@@ -34,7 +34,7 @@ class ManagerRoute implements Route {
 
         // get all lot info
         this.router.get(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const result: ParkingRate[] = this.lotService.getLots();
+            const result: ParkingRate[] = await this.lotService.getLots();
             res.send(result);
         });
         // insert a lot info
