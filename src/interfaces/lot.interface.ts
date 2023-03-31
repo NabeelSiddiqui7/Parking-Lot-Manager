@@ -18,7 +18,7 @@ export interface ParkingRate {
 
 export interface ParkingLotAvalibility {
     booked: ParkingSpace[],
-    unavalible: ParkingSpace[]
+    spaces: ParkingSpace[]
 }
 
 export interface ParkingLotRate {
