@@ -24,7 +24,7 @@ class UserRoute implements Route {
             const lotID: number = 1;
             const data: ParkingLotAvalibility = {
                 booked: await this.lotService.getBookedSpaces(lotID),
-                unavalible: await this.lotService.getUnavalibleSpaces(lotID)
+                unavalible: await this.lotService.getAllSpaces(lotID)
             }
             res.send(data);
         });
