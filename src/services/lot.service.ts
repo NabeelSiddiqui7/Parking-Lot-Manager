@@ -58,17 +58,17 @@ class LotService {
     }
 
     public async getBookedSpaces(lotID: number) {
-        const results: ParkingSpace[] = await prisma.$queryRaw<ParkingSpace[]>`SELECT id, 0 avalible FROM spaces s WHERE avalible AND lotid = ${lotID} AND id NOT IN (SELECT spaceid FROM tickets t WHERE t.expirydate IS NULL)`;
+        const results: ParkingSpace[] = await prisma.$queryRaw<ParkingSpace[]>`SELECT id, 0 avalible FROM spaces s WHERE avalible AND lotid = ${lotID} AND id IN (SELECT spaceid FROM tickets t WHERE t.expirydate IS NULL)`;
         return results;
     }
 
     public async getUnavalibleSpaces(lotID: number) {
-        const results: ParkingSpace[] = await prisma.$queryRaw<ParkingSpace[]>`SELECT id, avalible FROM spaces s WHERE NOT avalible AND lotid = ${lotID}`;
+        const results: ParkingSpace[] = await prisma.$queryRaw<ParkingSpace[]>`SELECT id, avalible, lengthlocation, widthlocation FROM spaces s WHERE NOT avalible AND lotid = ${lotID}`;
         return results;
     }
 
     public async getAllSpaces(lotID: number) {
-        const results: ParkingSpace[] = await prisma.$queryRaw<ParkingSpace[]>`SELECT id, avalible FROM spaces s WHERE lotid = ${lotID}`;
+        const results: ParkingSpace[] = await prisma.$queryRaw<ParkingSpace[]>`SELECT id, avalible, lengthlocation, widthlocation FROM spaces s WHERE lotid = ${lotID}`;
         return results;
     }
 

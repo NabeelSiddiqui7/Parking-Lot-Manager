@@ -8,7 +8,9 @@ export interface ParkingLot {
 
 export interface ParkingSpace {
     spaceid: number,
-    avalible: boolean
+    avalible: boolean,
+    lengthlocation: number,
+    widthlocation: number
 }
 
 export interface ParkingRate {
