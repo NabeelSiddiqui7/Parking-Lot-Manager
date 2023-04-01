@@ -33,15 +33,22 @@ class LotService {
         return results;
     }
 
-    public async getLots(sortField: "ASC" | "DESC") {
+    public async getLots(sortField: string, order: "ASC" | "DESC") {
         let results: ParkingLot[];
-        if (sortField == "ASC") {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
-            INNER JOIN rates on lots.id = rates.lotID`;
+
+        if (sortField == "name" && order == "ASC") {
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name ASC`;
+        } 
+        
+        else if (sortField == "name" && order == "DESC"){
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name DESC`;
+        }
+
+        else if (sortField == "location" && order == "ASC"){
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY location ASC`;
         }
         else {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
-            INNER JOIN rates on lots.id = rates.lotID`;
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY location DESC`;
         }
         return results;
     }
