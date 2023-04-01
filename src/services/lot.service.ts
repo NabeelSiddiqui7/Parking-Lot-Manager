@@ -37,18 +37,22 @@ class LotService {
         let results: ParkingLot[];
 
         if (sortField == "name" && order == "ASC") {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name ASC`;
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
+            INNER JOIN rates on lots.id = rates.lotID ORDER BY lots.name ASC`;
         } 
         
         else if (sortField == "name" && order == "DESC"){
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name DESC`;
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
+            INNER JOIN rates on lots.id = rates.lotID ORDER BY lots.name DESC`;
         }
 
         else if (sortField == "location" && order == "ASC"){
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY location ASC`;
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
+            INNER JOIN rates on lots.id = rates.lotID ORDER BY lots.location ASC`;
         }
         else {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY location DESC`;
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
+            INNER JOIN rates on lots.id = rates.lotID ORDER BY lots.location DESC`;
         }
         return results;
     }
