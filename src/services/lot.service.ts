@@ -35,6 +35,7 @@ class LotService {
 
     public async getLots(sortField: string, order: "ASC" | "DESC") {
         let results: ParkingLot[];
+
         if (sortField == "name" && order == "ASC") {
             results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name ASC`;
         } 

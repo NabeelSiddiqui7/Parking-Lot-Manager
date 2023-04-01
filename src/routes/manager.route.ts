@@ -7,7 +7,7 @@ import LotService from '@services/lot.service';
 import TicketService from '@services/ticket.service';
 import ManagerService from '@services/manager.service';
 import { ParkingLotAvalibility, ParkingLotRate, ParkingRate } from '@interfaces/lot.interface';
-import { Manager } from "@interfaces/manager.interface"
+import { Manager, ManagerAuth } from "@interfaces/manager.interface"
 
 class ManagerRoute implements Route {
     public router: Router = Router();
@@ -92,7 +92,7 @@ class ManagerRoute implements Route {
 
         // get all manager names
         this.router.get(`${this.path}/managers`, async (req: Request, res: Response, next: NextFunction) => {
-            const results: any = this.managerService.getManagers();
+            const results: Manager[] = await this.managerService.getManagers();
             res.send(results)
         });
         // insert a managers info
