@@ -26,20 +26,21 @@ class LotService {
         return null;
     }
 
-    public async deleteLot(lotName: string ) {
+    public async deleteLot(lotName: string) {
         const results: number = await prisma.$executeRaw`DELETE FROM lots WHERE name LIKE ${lotName}`;
 
-        
+
         return results;
     }
 
-    public async getLots(sortField: string) {
-        const results: ParkingLot[] = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots`;
-
-        if(sortField == 'desc'){
-            const results: ParkingLot[] = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name DESC`;
+    public async getLots(sortField: "ASC" | "DESC") {
+        let results: ParkingLot[];
+        if (sortField == "ASC") {
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name ASC`;
         }
-
+        else {
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT id, name, location, length, width FROM lots ORDER BY name DESC`;
+        }
         return results;
     }
 
