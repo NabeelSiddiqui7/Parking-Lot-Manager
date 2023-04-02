@@ -121,17 +121,16 @@ class ManagerRoute implements Route {
 
         // authenticate a manager
         this.router.post(`${this.path}/login`, async (req: Request, res: Response, next: NextFunction) => {
-            const managerusername: string = "saudr";
-            const managerpassword: string = "password";
-            const result = await this.managerService.getManagerAuth(managerusername);
-            if (result.length == 0) {
-                next(new HttpException(403, "Invalid Username"));
-            } else if (result[0].password != managerpassword) {
-                next(new HttpException(403, "Invalid Password"));
+            const { username, password } = req.body;
+          
+            const result = await this.managerService.getManagerAuth(username);
+          
+            if (result.length === 0 || result[0].password !== password) {
+              return next(new HttpException(403, "Invalid username or password"));
             } else {
-                res.send("Manager Authenticated");
+              res.send("Manager authenticated");
             }
-        });
+          });
     }
 }
 

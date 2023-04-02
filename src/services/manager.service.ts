@@ -17,7 +17,7 @@ class ManagerService {
     }
 
     public async getManagerAuth(username: string) {
-        const results: ManagerAuth[] = await prisma.$queryRaw<ManagerAuth[]>`SELECT username, password FROM managers WHERE username LIKE ${username}`;
+        const results: ManagerAuth[] = await prisma.$queryRaw<ManagerAuth[]>`SELECT username, password FROM managers WHERE username = ${username}`;
         return results;
     }
 }

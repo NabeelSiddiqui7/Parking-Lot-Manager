@@ -33,7 +33,7 @@ class LotService {
         return results;
     }
 
-    public async getLots(sortField: "ASC" | "DESC") {
+    public async getLots(sortField: string, order: "ASC" | "DESC") {
         let results: ParkingLot[];
         if (sortField == "ASC") {
             results = await prisma.$queryRaw<ParkingLot[]>`
