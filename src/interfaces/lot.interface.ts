@@ -3,7 +3,8 @@ export interface ParkingLot {
     name: string,
     location: string,
     length: number,
-    width: number
+    width: number,
+    freespaces: number
 }
 
 export interface ParkingSpace {

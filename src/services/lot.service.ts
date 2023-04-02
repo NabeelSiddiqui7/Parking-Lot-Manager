@@ -36,12 +36,68 @@ class LotService {
     public async getLots(sortField: "ASC" | "DESC") {
         let results: ParkingLot[];
         if (sortField == "ASC") {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
-            INNER JOIN rates on lots.id = rates.lotID`;
+            results = await prisma.$queryRaw<ParkingLot[]>`
+SELECT
+	l1.id,
+	l1.name,
+	l1.location,
+	r.rate,
+	l1.length,
+	l1.width,
+	(
+	SELECT
+		count(*)
+	FROM
+		spaces s
+	JOIN lots l2 ON
+		s.lotid = l2.id
+	WHERE
+		l2.id = l1.id
+		AND s.id NOT IN (
+		SELECT
+			spaceid
+		FROM
+			tickets t
+		WHERE
+			expirydate IS NULL))
+FROM
+	lots l1
+JOIN rates r ON
+	l1.id = r.lotID
+ORDER BY
+	l1.name ASC`;
         }
         else {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT lots.id, lots.name, lots.location, rates.rate, lots.length, lots.width FROM lots
-            INNER JOIN rates on lots.id = rates.lotID`;
+            results = await prisma.$queryRaw<ParkingLot[]>`
+SELECT
+    l1.id,
+    l1.name,
+    l1.location,
+    r.rate,
+    l1.length,
+    l1.width,
+    (
+    SELECT
+        count(*)
+    FROM
+        spaces s
+    JOIN lots l2 ON
+        s.lotid = l2.id
+    WHERE
+        l2.id = l1.id
+        AND s.id NOT IN (
+        SELECT
+            spaceid
+        FROM
+            tickets t
+        WHERE
+            expirydate IS NULL))
+FROM
+    lots l1
+JOIN rates r ON
+    l1.id = r.lotID
+ORDER BY
+    l1.name ASC`;
         }
         return results;
     }
