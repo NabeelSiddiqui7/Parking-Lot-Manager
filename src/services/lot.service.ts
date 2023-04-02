@@ -60,7 +60,8 @@ class LotService {
                 FROM
                     tickets t
                 WHERE
-                    expirydate IS NULL))::INTEGER
+                    expirydate IS NULL))::INTEGER,
+            l1.managerusername
         FROM
             lots l1
         JOIN rates r ON
@@ -94,6 +95,7 @@ class LotService {
                     tickets t
                 WHERE
                     expirydate IS NULL))::INTEGER
+            l1.managerusername
         FROM
             lots l1
         JOIN rates r ON
