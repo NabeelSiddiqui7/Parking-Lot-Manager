@@ -50,7 +50,7 @@ SELECT
 	FROM
 		spaces s
 	JOIN lots l2 ON
-		s.lotid = l2.id
+		s.lotid = l2.id AND avalible
 	WHERE
 		l2.id = l1.id
 		AND s.id NOT IN (
@@ -82,7 +82,7 @@ SELECT
     FROM
         spaces s
     JOIN lots l2 ON
-        s.lotid = l2.id
+        s.lotid = l2.id AND avalible
     WHERE
         l2.id = l1.id
         AND s.id NOT IN (
