@@ -6,7 +6,7 @@ import { Route } from '@interfaces/route.interface';
 import LotService from '@services/lot.service';
 import TicketService from '@services/ticket.service';
 import ManagerService from '@services/manager.service';
-import { ParkingLotAvalibility, ParkingLotRate, ParkingRate } from '@interfaces/lot.interface';
+import { ParkingLot, ParkingLotAvalibility, ParkingLotRate, ParkingRate } from '@interfaces/lot.interface';
 import { Manager, ManagerAuth } from "@interfaces/manager.interface"
 
 class ManagerRoute implements Route {
@@ -33,9 +33,18 @@ class ManagerRoute implements Route {
         this.router.put(`${this.path}/rate`, async (req: Request, res: Response, next: NextFunction) => { });
 
         // get all lot info
+        //this.router.get(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
+        //    const result: any = await this.lotService.getLots();
+        //    res.send(result);
+        //});
+
+        // get all lots info
         this.router.get(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const result: any = await this.lotService.getLots();
-            res.send(result);
+            const sortField: "name" | "location"  = req.query.sortField?.toString() as "name" | "location";
+            const order: "ASC" | "DESC" = req.query.order?.toString()?.toUpperCase() as "ASC" | "DESC"; // change this to be req.params.<varname> or req.body.<varname> dependent on how you make the request
+            const data: ParkingLot[] = await this.lotService.getLots(sortField, order);
+            
+            res.send(data);
         });
         // insert a lot info
         // this.router.post(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
