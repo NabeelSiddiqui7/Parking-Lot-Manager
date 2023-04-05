@@ -21,7 +21,7 @@ class UserRoute implements Route {
     public initializeRoutes() {
         // get avalible spots in a lot
         this.router.get(`${this.path}/lot`, async (req: Request, res: Response) => {
-            const lotID: any = Number(req.query.id);
+            const lotID: number = Number(req.query.id);
             const data: ParkingLotAvalibility = {
                 booked: await this.lotService.getBookedSpaces(lotID),
                 spaces: await this.lotService.getAllSpaces(lotID)
