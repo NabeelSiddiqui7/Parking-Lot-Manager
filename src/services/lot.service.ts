@@ -35,72 +35,21 @@ class LotService {
 
     public async getLots(sortField: string, order: "ASC" | "DESC") {
         let results: ParkingLot[];
-        if (sortField == "ASC") {
-            results = await prisma.$queryRaw<ParkingLot[]>`
-        SELECT
-            l1.id,
-            l1.name,
-            l1.location,
-            r.rate,
-            l1.length,
-            l1.width,
-            (
-            SELECT
-                count(*)
-            FROM
-                spaces s
-            JOIN lots l2 ON
-                s.lotid = l2.id
-                AND avalible
-            WHERE
-                l2.id = l1.id
-                AND s.id NOT IN (
-                SELECT
-                    spaceid
-                FROM
-                    tickets t
-                WHERE
-                    expirydate IS NULL))::INTEGER
-        FROM
-            lots l1
-        JOIN rates r ON
-            l1.id = r.lotID
-        ORDER BY
-            l1.name ASC`;
+        if (sortField == "name" && order == "ASC") {
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, ( SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id AND avalible WHERE l2.id = l1.id AND s.id NOT IN ( SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, l1.managerusername FROM lots l1 JOIN rates r ON l1.id = r.lotID ORDER BY l1.name ASC`;
         }
+        else if (sortField == "name" && order == "DESC") {
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, ( SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id AND avalible WHERE l2.id = l1.id AND s.id NOT IN ( SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, l1.managerusername FROM lots l1 JOIN rates r ON l1.id = r.lotID ORDER BY l1.name DESC`;
+        }
+
+        else if (sortField == "location" && order == "ASC") {
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, ( SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id AND avalible WHERE l2.id = l1.id AND s.id NOT IN ( SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, l1.managerusername FROM lots l1 JOIN rates r ON l1.id = r.lotID ORDER BY l1.location ASC`;
+        }
+
         else {
-            results = await prisma.$queryRaw<ParkingLot[]>`
-        SELECT
-            l1.id,
-            l1.name,
-            l1.location,
-            r.rate,
-            l1.length,
-            l1.width,
-            (
-            SELECT
-                count(*)
-            FROM
-                spaces s
-            JOIN lots l2 ON
-                s.lotid = l2.id
-                AND avalible
-            WHERE
-                l2.id = l1.id
-                AND s.id NOT IN (
-                SELECT
-                    spaceid
-                FROM
-                    tickets t
-                WHERE
-                    expirydate IS NULL))::INTEGER
-        FROM
-            lots l1
-        JOIN rates r ON
-            l1.id = r.lotID
-        ORDER BY
-            l1.name DESC`;
+            results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, ( SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id AND avalible WHERE l2.id = l1.id AND s.id NOT IN ( SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, l1.managerusername FROM lots l1 JOIN rates r ON l1.id = r.lotID ORDER BY l1.location DESC`;
         }
+
         return results;
     }
 

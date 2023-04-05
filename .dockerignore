@@ -7,3 +7,6 @@ README.md
 nodemon.json
 node_modules/**
 
+# Ignore Dockerfiles
+Dockerfile
+docker*.yml
