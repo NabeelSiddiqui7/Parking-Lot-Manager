@@ -29,3 +29,12 @@ The backend application is set to run on localhost:5000
 Now you can run the frontend at: https://github.com/uwohci23/g10-frontend/
 
 
+## Manager Credentials
+| Username | Password | 
+| :---: | :---: | 
+| sawyerh  | password |
+| aryam  | password |
+
+The database will be going offline on April 30 2023. A database dump is provided in postgresdb. Change the env file to match your new db.
+
+
