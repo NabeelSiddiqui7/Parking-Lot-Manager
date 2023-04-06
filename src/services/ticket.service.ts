@@ -7,8 +7,8 @@ class TicketService {
         const results = await prisma.$queryRaw`SELECT id, spaceid, effectivedate, expirydate FROM tickets t WHERE t.id = ${ticketID}`;
         return results;
     }
-    public async insertTicket(spaceID: number, expectedexpirydate: number) {
-        const results: number = await prisma.$executeRaw`INSERT INTO tickets (spaceid, expectedexpirydate) VALUES (${spaceID}, ${expectedexpirydate})`;
+    public async insertTicket(spaceID: number, expectedexpirydate: Date) {
+        const results: number = await prisma.$executeRaw`INSERT INTO tickets (spaceid, expectedexpirydate) VALUES (${spaceID}, (TO_TIMESTAMP(${expectedexpirydate}, 'YYYY-MM-DD HH:MI:SS')))`;
         return results;
     }
 

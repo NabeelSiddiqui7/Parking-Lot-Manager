@@ -52,9 +52,10 @@ class UserRoute implements Route {
         this.router.post(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
             const spaceID: number = 1;
             const expectedexpirydate: number = Date.now();
-            const result: number = await this.ticketService.insertTicket(spaceID, expectedexpirydate);
+            const result: number = await this.ticketService.insertTicket(Number(req.body.spaceid), req.body.time);
+            res.statusCode = 200;
             if (result) {
-                res.send(result);
+                res.sendStatus(200);
             }
             else {
                 next(new HttpException(500, 'Unable to insert ticket'))
