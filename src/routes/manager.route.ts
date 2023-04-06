@@ -37,15 +37,11 @@ class ManagerRoute implements Route {
             const result: any = await this.lotService.getLots();
             res.send(result);
         });
+
         // insert a lot info
         this.router.post(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const lotname: string = "mybrandnewlot";
-            const lotlength: number = 4;
-            const lotwidth: number = 4;
-            const lotlocation: string = "idk";
-            const lotrate: number = 1.2;
-            const lotovertimerate = 2.5;
-            const result = await this.lotService.insertLot(lotname, lotlength, lotwidth, lotlocation, lotrate, lotovertimerate);
+            const { full_name, rows, columns, location, rate, overtime, manager } = req.body;
+            const result = await this.lotService.insertLot(full_name, parseInt(rows), parseInt(columns), location, parseFloat(rate), parseFloat(overtime), manager);
             if (result) {
                 res.send("New lot created");
             }
