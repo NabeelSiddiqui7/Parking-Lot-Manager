@@ -63,14 +63,13 @@ class UserRoute implements Route {
 
         //expire ticket
         this.router.put(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
-            const ticketID: number = 4;
-            if (await this.ticketService.updateTicket(ticketID)) {
-                const results: any= await this.ticketService.getTicketPrice(ticketID);
-                res.send(results);
+            const ticketID: any = req.body.id;
+            const updateTime = req.body.time;
+            if (await this.ticketService.updateTicket(ticketID, updateTime)) {
+                res.sendStatus(200);
             } else {
                 next(new HttpException(402, 'No such ticket exists'));
             }
-
         });
 
         // get ticket info

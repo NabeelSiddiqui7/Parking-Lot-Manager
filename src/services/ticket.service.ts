@@ -12,8 +12,8 @@ class TicketService {
         return results;
     }
 
-    public async updateTicket(ticketID: number) {
-        const results: number = await prisma.$executeRaw`UPDATE tickets SET expirydate=CURRENT_TIMESTAMP WHERE id = ${ticketID}`;
+    public async updateTicket(ticketID: number, expectedexpirydate: Date) {
+        const results: number = await prisma.$executeRaw`UPDATE tickets SET expectedexpirydate=(TO_TIMESTAMP(${expectedexpirydate}, 'YYYY-MM-DD HH:MI:SS')) WHERE id = ${Number(ticketID)}`;
         return results;
     }
 
