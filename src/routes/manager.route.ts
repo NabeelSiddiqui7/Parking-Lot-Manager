@@ -93,7 +93,7 @@ class ManagerRoute implements Route {
         });
         // insert a managers info
         this.router.post(`${this.path}/managers`, async (req: Request, res: Response, next: NextFunction) => {
-            const { full_name, user_name, password } = req.body.data.formData;
+            const { full_name, user_name, password } = req.body;
             if (await this.managerService.insertManager(user_name, full_name, password)) {
                 res.send("Manager Created");
             } else {
