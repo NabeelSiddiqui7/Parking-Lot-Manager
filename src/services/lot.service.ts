@@ -52,7 +52,8 @@ class LotService {
                 JOIN rates r ON s.lotid = r.lotid AND t.effectivedate BETWEEN r.effectivedate AND COALESCE(r.expirydate, CURRENT_TIMESTAMP)
                 WHERE s.lotid = l1.id) subquery), 0) AS revenue
             FROM lots l1 
-            JOIN rates r ON l1.id = r.lotid`;
+            JOIN rates r ON l1.id = r.lotid
+            ORDER BY l1.name ASC`;
 
         return results;
     }
