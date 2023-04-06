@@ -50,8 +50,6 @@ class UserRoute implements Route {
 
         // book ticket
         this.router.post(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
-            const spaceID: number = 1;
-            const expectedexpirydate: number = Date.now();
             const result: number = await this.ticketService.insertTicket(Number(req.body.spaceid), req.body.time);
             res.statusCode = 200;
             if (result) {
@@ -77,8 +75,8 @@ class UserRoute implements Route {
 
         // get ticket info
         this.router.get(`${this.path}/ticket`, async (req: Request, res: Response, next: NextFunction) => {
-            const ticketID: number = 2;
-            const data: any = await this.ticketService.getTicket(ticketID);
+            const ticketID: any = req.query.id;
+            const data: any = await this.ticketService.getTicket(Number(ticketID));
             if (data) {
                 res.send(data);
             } else {

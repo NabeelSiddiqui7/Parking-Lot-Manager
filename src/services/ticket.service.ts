@@ -3,12 +3,12 @@ import prisma from "@databases/postgresClient"
 
 class TicketService {
 
-    public async getTicket(ticketID: number) {
-        const results = await prisma.$queryRaw`SELECT id, spaceid, effectivedate, expirydate FROM tickets t WHERE t.id = ${ticketID}`;
+    public async getTicket(id: any) {
+        const results = await prisma.$queryRaw`SELECT id, spaceid, effectivedate, expirydate, booked FROM tickets t WHERE t.spaceid = ${id}`;
         return results;
     }
     public async insertTicket(spaceID: number, expectedexpirydate: Date) {
-        const results: number = await prisma.$executeRaw`INSERT INTO tickets (spaceid, expectedexpirydate) VALUES (${spaceID}, (TO_TIMESTAMP(${expectedexpirydate}, 'YYYY-MM-DD HH:MI:SS')))`;
+        const results: number = await prisma.$executeRaw`INSERT INTO tickets (spaceid, expectedexpirydate, booked) VALUES (${spaceID}, (TO_TIMESTAMP(${expectedexpirydate}, 'YYYY-MM-DD HH:MI:SS')), TRUE)`;
         return results;
     }
 
