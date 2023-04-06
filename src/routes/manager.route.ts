@@ -51,11 +51,11 @@ class ManagerRoute implements Route {
         });
 
         // delete a lot
-        this.router.delete(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const lotname: string = "myfirstlot";
-            const results: number = await this.lotService.deleteLot(lotname);
+        this.router.delete(`${this.path}/lots/:lotid`, async (req: Request, res: Response, next: NextFunction) => {
+            const lotid: string = req.params.lotid;
+            const results: number = await this.lotService.deleteLot(lotid);
             if (results) {
-                res.send(`${lotname} was deleted`);
+                res.send(`${lotid} was deleted`);
             } else {
                 next(new HttpException(402, "No such lot"));
             }

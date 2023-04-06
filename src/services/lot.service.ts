@@ -26,9 +26,10 @@ class LotService {
         return null;
     }
 
-    public async deleteLot(lotName: string) {
-        const results: number = await prisma.$executeRaw`DELETE FROM lots WHERE name LIKE ${lotName}`;
-
+    public async deleteLot(lotid: string) {
+        const rmRates: number = await prisma.$executeRaw`DELETE FROM rates WHERE lotid = ${parseInt(lotid)}`;
+        const rmSpaces: number = await prisma.$executeRaw`DELETE FROM spaces WHERE lotid = ${parseInt(lotid)}`;
+        const results: number = await prisma.$executeRaw`DELETE FROM lots WHERE id = ${parseInt(lotid)}`;
 
         return results;
     }
