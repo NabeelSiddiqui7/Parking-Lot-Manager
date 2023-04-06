@@ -4,7 +4,7 @@ import prisma from "@databases/postgresClient"
 class TicketService {
 
     public async getTicket(id: any) {
-        const results = await prisma.$queryRaw`SELECT id, spaceid, effectivedate, expirydate, booked FROM tickets t WHERE t.spaceid = ${id}`;
+        const results = await prisma.$queryRaw`SELECT id, spaceid, effectivedate, expectedexpirydate, booked FROM tickets t WHERE t.spaceid = ${id}`;
         return results;
     }
     public async insertTicket(spaceID: number, expectedexpirydate: Date) {
