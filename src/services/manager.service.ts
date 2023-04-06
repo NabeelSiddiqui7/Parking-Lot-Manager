@@ -12,8 +12,16 @@ class ManagerService {
     }
 
     public async deleteManager(username: string) {
-        const results: number = await prisma.$executeRaw`DELETE FROM managers WHERE username LIKE ${username}`;
-        return results;
+        const hasLot: any[] = await prisma.$queryRaw`SELECT DISTINCT managerusername FROM lots WHERE managerusername = ${username}`;
+        
+        if(hasLot.length > 0){
+            return false;
+        }
+
+        else{
+            const results: number = await prisma.$executeRaw`DELETE FROM managers WHERE username LIKE ${username}`;
+            return results;
+        }
     }
 
     public async getManagerAuth(username: string) {

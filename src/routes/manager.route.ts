@@ -93,10 +93,8 @@ class ManagerRoute implements Route {
         });
         // insert a managers info
         this.router.post(`${this.path}/managers`, async (req: Request, res: Response, next: NextFunction) => {
-            const managername: string = "saud";
-            const managerusername: string = "saudr";
-            const managerpassword: string = "paswrd";
-            if (await this.managerService.insertManager(managerusername, managername, managerpassword)) {
+            const { full_name, user_name, password } = req.body.data.formData;
+            if (await this.managerService.insertManager(user_name, full_name, password)) {
                 res.send("Manager Created");
             } else {
                 next(new HttpException(402, "Failed to insert manager"));
@@ -107,8 +105,8 @@ class ManagerRoute implements Route {
 
         // delete a manager
         this.router.delete(`${this.path}/managers`, async (req: Request, res: Response, next: NextFunction) => {
-            const managerusername = "saudr";
-            if (await this.managerService.deleteManager(managerusername)) {
+            const { userName } = req.body;
+            if (await this.managerService.deleteManager(userName)) {
                 res.send("Manager Delete Successful");
             } else {
                 next(new HttpException(402, "Failed to delete manager"));
