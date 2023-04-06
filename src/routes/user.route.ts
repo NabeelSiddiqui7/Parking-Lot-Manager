@@ -30,9 +30,9 @@ class UserRoute implements Route {
         });
         // get all lots info
         this.router.get(`${this.path}/lots`, async (req: Request, res: Response, next: NextFunction) => {
-            const sortField: "name" | "location"  = req.query.sortField?.toString() as "name" | "location";
-            const order: "ASC" | "DESC" = req.query.order?.toString()?.toUpperCase() as "ASC" | "DESC"; // change this to be req.params.<varname> or req.body.<varname> dependent on how you make the request
-            const data: ParkingLot[] = await this.lotService.getLots(sortField, order);
+            //const sortField: "name" | "location"  = req.query.sortField?.toString() as "name" | "location";
+            //const order: "ASC" | "DESC" = req.query.order?.toString()?.toUpperCase() as "ASC" | "DESC"; // change this to be req.params.<varname> or req.body.<varname> dependent on how you make the request
+            const data: ParkingLot[] = await this.lotService.getLots();
             
             res.send(data);
         });

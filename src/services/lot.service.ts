@@ -34,9 +34,8 @@ class LotService {
         return results;
     }
 
-    public async getLots(sortField: string, order: "ASC" | "DESC") {
+    public async getLots() {
         let results: ParkingLot[];
-        if (sortField == "name" && order == "ASC") {
             results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, 
             (SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id WHERE l2.id = l1.id AND s.id NOT IN (SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, 
             l1.managerusername, 
@@ -53,71 +52,7 @@ class LotService {
                 JOIN rates r ON s.lotid = r.lotid AND t.effectivedate BETWEEN r.effectivedate AND COALESCE(r.expirydate, CURRENT_TIMESTAMP)
                 WHERE s.lotid = l1.id) subquery), 0) AS revenue
             FROM lots l1 
-            JOIN rates r ON l1.id = r.lotid 
-            ORDER BY l1.name ASC`;
-        }
-        else if (sortField == "name" && order == "DESC") {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, 
-            (SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id WHERE l2.id = l1.id AND s.id NOT IN (SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, 
-            l1.managerusername, 
-            COALESCE(
-            (SELECT SUM(price) FROM
-                (SELECT t.id, s.lotid,
-                    CASE
-                        WHEN t.expirydate <= t.expectedexpirydate 
-                        THEN (DATE_PART('day', t.expirydate - t.effectivedate) * 24 + DATE_PART('hour', t.expirydate - t.effectivedate)) * 60 + DATE_PART('minute', t.expirydate - t.effectivedate) * r.rate
-                        ELSE (DATE_PART('day', t.expirydate - t.effectivedate) * 24 + DATE_PART('hour', t.expirydate - t.effectivedate)) * 60 + DATE_PART('minute', t.expirydate - t.effectivedate) * r.rate + (DATE_PART('day', t.expectedexpirydate - t.expirydate) * 24 + DATE_PART('hour', t.expectedexpirydate - t.expirydate)) * 60 + DATE_PART('minute', t.expectedexpirydate - t.expirydate) * r.overtimerate
-                    END AS price
-                FROM tickets t
-                JOIN spaces s ON t.spaceid = s.id
-                JOIN rates r ON s.lotid = r.lotid AND t.effectivedate BETWEEN r.effectivedate AND COALESCE(r.expirydate, CURRENT_TIMESTAMP)
-                WHERE s.lotid = l1.id) subquery), 0) AS revenue
-            FROM lots l1 
-            JOIN rates r ON l1.id = r.lotid 
-            ORDER BY l1.name DESC`;
-        }
-
-        else if (sortField == "location" && order == "ASC") {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, 
-            (SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id WHERE l2.id = l1.id AND s.id NOT IN (SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, 
-            l1.managerusername, 
-            COALESCE(
-            (SELECT SUM(price) FROM
-                (SELECT t.id, s.lotid,
-                    CASE
-                        WHEN t.expirydate <= t.expectedexpirydate 
-                        THEN (DATE_PART('day', t.expirydate - t.effectivedate) * 24 + DATE_PART('hour', t.expirydate - t.effectivedate)) * 60 + DATE_PART('minute', t.expirydate - t.effectivedate) * r.rate
-                        ELSE (DATE_PART('day', t.expirydate - t.effectivedate) * 24 + DATE_PART('hour', t.expirydate - t.effectivedate)) * 60 + DATE_PART('minute', t.expirydate - t.effectivedate) * r.rate + (DATE_PART('day', t.expectedexpirydate - t.expirydate) * 24 + DATE_PART('hour', t.expectedexpirydate - t.expirydate)) * 60 + DATE_PART('minute', t.expectedexpirydate - t.expirydate) * r.overtimerate
-                    END AS price
-                FROM tickets t
-                JOIN spaces s ON t.spaceid = s.id
-                JOIN rates r ON s.lotid = r.lotid AND t.effectivedate BETWEEN r.effectivedate AND COALESCE(r.expirydate, CURRENT_TIMESTAMP)
-                WHERE s.lotid = l1.id) subquery), 0) AS revenue
-            FROM lots l1 
-            JOIN rates r ON l1.id = r.lotid 
-            ORDER BY l1.location ASC`;
-        }
-
-        else {
-            results = await prisma.$queryRaw<ParkingLot[]>`SELECT l1.id, l1.name, l1.location, r.rate, l1.length, l1.width, 
-            (SELECT count(*) FROM spaces s JOIN lots l2 ON s.lotid = l2.id WHERE l2.id = l1.id AND s.id NOT IN (SELECT spaceid FROM tickets t WHERE expirydate IS NULL))::INTEGER, 
-            l1.managerusername, 
-            COALESCE(
-            (SELECT SUM(price) FROM
-                (SELECT t.id, s.lotid,
-                    CASE
-                        WHEN t.expirydate <= t.expectedexpirydate 
-                        THEN (DATE_PART('day', t.expirydate - t.effectivedate) * 24 + DATE_PART('hour', t.expirydate - t.effectivedate)) * 60 + DATE_PART('minute', t.expirydate - t.effectivedate) * r.rate
-                        ELSE (DATE_PART('day', t.expirydate - t.effectivedate) * 24 + DATE_PART('hour', t.expirydate - t.effectivedate)) * 60 + DATE_PART('minute', t.expirydate - t.effectivedate) * r.rate + (DATE_PART('day', t.expectedexpirydate - t.expirydate) * 24 + DATE_PART('hour', t.expectedexpirydate - t.expirydate)) * 60 + DATE_PART('minute', t.expectedexpirydate - t.expirydate) * r.overtimerate
-                    END AS price
-                FROM tickets t
-                JOIN spaces s ON t.spaceid = s.id
-                JOIN rates r ON s.lotid = r.lotid AND t.effectivedate BETWEEN r.effectivedate AND COALESCE(r.expirydate, CURRENT_TIMESTAMP)
-                WHERE s.lotid = l1.id) subquery), 0) AS revenue
-            FROM lots l1 
-            JOIN rates r ON l1.id = r.lotid 
-            ORDER BY l1.location DESC`;
-        }
+            JOIN rates r ON l1.id = r.lotid`;
 
         return results;
     }
